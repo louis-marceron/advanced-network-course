@@ -13,11 +13,13 @@ logging synchronous
 exec-timeout 0 0
 login
 !
-line vty 0 15
+line vty 0 4
 password cisco
 logging synchronous
 exec-timeout 0 0
 login
+!
+! ==== Routes ====
 !
 interface FastEthernet 0/0
 description Connection to LAN_3
@@ -41,10 +43,41 @@ ipv6 address fe80::2 link-local
 ipv6 address fc00:2:3::2/64
 no shutdown
 !
-! Route to LAN_2
-ip route 172.16.2.0 255.255.255.0 10.2.3.1
+interface Loopback1
+ip address 192.168.31.30 255.255.255.0
+ipv6 address 2001:db8:0:31::30/64
 !
-! Route to LAN_4
+interface Loopback2
+ip address 192.168.32.30 255.255.255.0
+ipv6 address 2001:db8:0:32::30/64
+!
+! ==== Routes ====
+!
+! Default gateway
+ip route 0.0.0.0 0.0.0.0 10.3.4.2
+!
+! > Via R_2
+! WAN
+ip route 10.1.2.0 255.255.255.0 10.2.3.1
+! LAN_1
+ip route 172.16.1.0 255.255.255.0 10.2.3.1
+ipv6 route 2001:db8:1::/64 fc00:2:3::1
+! LAN_2
+! using gateway ip
+ip route 172.16.2.0 255.255.255.0 10.2.3.1
+! using exit interface
+ip route 172.16.2.0 255.255.255.0 Serial 0/0/1
+ipv6 route 2001:db8:2::/64 fc00:2:3::1
+!
+! > Via R_4
+! WAN
+ip route 10.4.5.0 255.255.255.0 10.3.4.2
+! LAN_4
 ip route 172.16.4.0 255.255.255.0 10.3.4.2
+ipv6 route 2001:db8:4::/64 fc00:3:4::2
+! LAN_5
+ip route 172.16.5.0 255.255.255.0 10.3.4.2
+ipv6 route 2001:db8:5::/64 fc00:3:4::2
 !
 end
+!
