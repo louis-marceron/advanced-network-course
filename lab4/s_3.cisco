@@ -1,0 +1,26 @@
+!
+hostname S_3
+!
+enable password class
+!
+line console 0
+password cisco
+!
+line vty 0 15
+password cisco
+!
+interface VLAN 1
+description VLAN Manager
+ip address 192.168.3.39 255.255.255.0
+no shutdown
+!
+interface FastEthernet 0/1
+description Connection to PC1
+!
+interface FastEthernet 0/11
+description Connection to PC2
+!
+interface FastEthernet 0/23
+description Connection to R_3
+!
+end
