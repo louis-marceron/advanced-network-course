@@ -1,0 +1,204 @@
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+no service password-encryption
+!
+hostname R_7
+!
+!
+enable password class
+!
+!
+no ip cef
+ipv6 unicast-routing
+!
+no ipv6 cef
+!
+!
+spanning-tree mode pvst
+!
+!
+interface FastEthernet0/0
+ description Connecting to S_7
+ ip address 172.16.7.70 255.255.255.0
+ duplex auto
+ speed auto
+ ipv6 address FE80::70 link-local
+ ipv6 address 2001:DB8:7::70/64
+!
+interface FastEthernet0/1
+ ip address 192.168.107.70 255.255.255.0
+ duplex auto
+ speed auto
+!
+interface Serial0/0/0
+ description Connection to R_8
+ ip address 10.7.8.1 255.255.255.0
+ ipv6 address FE80::1 link-local
+ ipv6 address FC00:7:8::1/64
+ clock rate 128000
+!
+interface Serial0/0/1
+ description Connection to R_6
+ ip address 10.6.7.2 255.255.255.0
+ ipv6 address FE80::2 link-local
+ ipv6 address FC00:6:7::2/64
+!
+interface Serial0/1/0
+ no ip address
+ clock rate 2000000
+ shutdown
+!
+interface Serial0/1/1
+ no ip address
+ clock rate 2000000
+ shutdown
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+ip classless
+ip route 172.16.6.0 255.255.255.0 10.6.7.1 
+!
+ip flow-export version 9
+!
+ipv6 route 2001:DB8:6::/64 FC00:6:7::1
+!
+!
+banner motd ^C
+A supervised system. Access only to authorized users.
+^C
+!
+!
+!
+!
+!
+line con 0
+ password cisco
+ login
+!
+line aux 0
+!
+line vty 0 4
+ login
+!
+!
+!
+end
+
+
+R_7#
+R_7#
+R_7#
+R_7#show running-config 
+Building configuration...
+
+Current configuration : 1363 bytes
+!
+version 12.4
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+no service password-encryption
+!
+hostname R_7
+!
+!
+!
+enable password class
+!
+!
+!
+!
+!
+!
+no ip cef
+ipv6 unicast-routing
+!
+no ipv6 cef
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+spanning-tree mode pvst
+!
+!
+!
+!
+!
+!
+interface FastEthernet0/0
+ description Connecting to S_7
+ ip address 172.16.7.70 255.255.255.0
+ duplex auto
+ speed auto
+ ipv6 address FE80::70 link-local
+ ipv6 address 2001:DB8:7::70/64
+!
+interface FastEthernet0/1
+ ip address 192.168.107.70 255.255.255.0
+ duplex auto
+ speed auto
+!
+interface Serial0/0/0
+ description Connection to R_8
+ ip address 10.7.8.1 255.255.255.0
+ ipv6 address FE80::1 link-local
+ ipv6 address FC00:7:8::1/64
+ clock rate 128000
+!
+interface Serial0/0/1
+ description Connection to R_6
+ ip address 10.6.7.2 255.255.255.0
+ ipv6 address FE80::2 link-local
+ ipv6 address FC00:6:7::2/64
+!
+interface Serial0/1/0
+ no ip address
+ clock rate 2000000
+ shutdown
+!
+interface Serial0/1/1
+ no ip address
+ clock rate 2000000
+ shutdown
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+ip classless
+ip route 172.16.6.0 255.255.255.0 10.6.7.1 
+!
+ip flow-export version 9
+!
+ipv6 route 2001:DB8:6::/64 FC00:6:7::1
+!
+!
+banner motd ^C
+A supervised system. Access only to authorized users.
+^C
+!
+!
+!
+!
+!
+line con 0
+ password cisco
+ login
+!
+line aux 0
+!
+line vty 0 4
+ login
+!
+!
+!
+end

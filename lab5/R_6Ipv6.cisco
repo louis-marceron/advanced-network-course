@@ -1,0 +1,112 @@
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+no service password-encryption
+!
+hostname R_6
+!
+!
+!
+enable password class
+!
+!
+!
+!
+!
+!
+no ip cef
+ipv6 unicast-routing
+!
+no ipv6 cef
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+no ip domain-lookup
+!
+!
+spanning-tree mode pvst
+!
+!
+!
+!
+!
+!
+interface FastEthernet0/0
+ description Connecting to S_6
+ ip address 172.16.6.60 255.255.255.0
+ duplex auto
+ speed auto
+ ipv6 address FE80::60 link-local
+ ipv6 address 2001:DB8:6::60/64
+!
+interface FastEthernet0/1
+ no ip address
+ duplex auto
+ speed auto
+ shutdown
+!
+interface Serial0/0/0
+ description Connection to R_7
+ ip address 10.6.7.1 255.255.255.0
+ ipv6 address FE80::1 link-local
+ ipv6 address FC00:6:7::1/64
+ clock rate 128000
+!
+interface Serial0/0/1
+ description Connection to R_1
+ ip address 10.1.6.2 255.255.255.0
+ ipv6 address FE80::2 link-local
+ ipv6 address FC00:1:6::2/64
+!
+interface Serial0/1/0
+ no ip address
+ clock rate 2000000
+ shutdown
+!
+interface Serial0/1/1
+ no ip address
+ clock rate 2000000
+ shutdown
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+ip classless
+ip route 172.16.7.0 255.255.255.0 10.6.7.2 
+!
+ip flow-export version 9
+!
+ipv6 route 2001:DB8:7::/64 FC00:6:7::2
+!
+!
+banner motd ^C
+The supervised. Access only to authorized users^C
+!
+!
+!
+!
+!
+line con 0
+ exec-timeout 0 0
+ password cisco
+ logging synchronous
+ login
+!
+line aux 0
+!
+line vty 0 4
+ exec-timeout 0 0
+ password cisco
+ logging synchronous
+ login
+!
+!
+!
+end
