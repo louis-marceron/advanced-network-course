@@ -1,0 +1,31 @@
+hostname S_7
+!
+enable password class
+!
+interface FastEthernet0/1
+ description Connection to PC1
+!
+interface FastEthernet0/11
+ description Connection to PC2
+!
+interface FastEthernet0/23
+ description Connection to R_7
+!
+interface Vlan1
+ description VLAN Manager
+ ip address 192.168.7.79 255.255.255.0
+!
+banner motd ^CA supervised system. Access only to authorized users^C
+!
+line con 0
+ password cisco
+ login
+!
+line vty 0 4
+ password cisco
+ login
+line vty 5 15
+ password cisco
+ login
+!
+end

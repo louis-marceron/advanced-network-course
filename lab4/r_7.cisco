@@ -1,0 +1,35 @@
+hostname R_7
+!
+enable password class
+!
+interface FastEthernet0/0
+ description Connection to LAN_7
+ ip address 192.168.7.70 255.255.255.0
+ duplex auto
+ speed auto
+!
+interface FastEthernet0/1
+ ip address 192.168.107.70 255.255.255.0
+ duplex auto
+ speed auto
+!
+interface Serial0/0/0
+ description Connection to R_8
+ ip address 10.7.8.1 255.255.255.0
+ clock rate 2000000
+!
+interface Serial0/1/0
+ description Connection to R_6
+ ip address 10.6.7.2 255.255.255.0
+!
+banner motd ^C A supervised system. Access only to authorized users ^C
+!
+line con 0
+ password cisco
+ login
+!
+line vty 0 8
+ password cisco
+ login
+!
+end
