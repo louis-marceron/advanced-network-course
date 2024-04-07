@@ -1,4 +1,4 @@
-hostname S_7
+hostname S_6
 !
 enable password class
 !
@@ -11,15 +11,15 @@ interface FastEthernet0/11
  no shutdown
 !
 interface FastEthernet0/23
- description Connection to R_7
+ description Connection to R_6
  no shutdown
 !
 interface Vlan1
- ip address 192.168.7.79 255.255.255.0
+ ip address 172.16.6.69 255.255.255.0
  description VLAN Manager
  no shutdown
 !
-banner motd ^CA supervised system. Access only to authorized users^C
+ip default-gateway 172.16.6.60
 !
 line con 0
  password cisco

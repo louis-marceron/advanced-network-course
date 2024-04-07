@@ -1,0 +1,45 @@
+hostname R_8
+!
+enable password class
+!
+no ip domain-lookup
+!
+ipv6 unicast-routing
+!
+interface fastethernet0/0
+ description connection to lan_8
+ ip address 172.16.8.80 255.255.255.0
+ ipv6 address FE80::80 link-local
+ ipv6 address 2001:DB8:8::80/64
+ no shutdown
+!
+interface serial0/0/0
+ description connection to r_9
+ ip address 10.8.9.1 255.255.255.0
+ clock rate 128000
+ no shutdown
+!
+interface serial0/0/1
+ description connection to r_7
+ ip address 10.7.8.2 255.255.255.0
+ ipv6 address FE80::2 link-local
+ ipv6 address FC00:7:8::2/64
+ no shutdown
+!
+banner motd ^c the supervised. access only to authorized users  ^c
+!
+line con 0
+ exec-timeout 0 0
+ password cisco
+ logging synchronous
+!
+line vty 0 4
+ exec-timeout 0 0
+ password cisco
+ logging synchronous
+ login
+!
+ip route 172.16.7.0 255.255.255.0 Serial0/0/1 
+ipv6 route 2001:db8:7::/64 Serial0/0/1
+!
+end
