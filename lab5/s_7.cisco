@@ -4,7 +4,6 @@ enable password class
 !
 interface FastEthernet0/1
  description Connection to PC1
-
  no shutdown
 !
 interface FastEthernet0/11

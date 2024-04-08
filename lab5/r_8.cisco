@@ -6,6 +6,16 @@ no ip domain-lookup
 !
 ipv6 unicast-routing
 !
+interface Loopback1
+ ip address 192.168.81.80 255.255.255.0
+ ipv6 address 2001:db8:0:81::80/64
+ no shutdown
+!
+interface Loopback2
+ ip address 192.168.82.80 255.255.255.0
+ ipv6 address 2001:db8:0:82::80/64
+ no shutdown
+!
 interface fastethernet0/0
  description connection to lan_8
  ip address 172.16.8.80 255.255.255.0
@@ -41,5 +51,6 @@ line vty 0 4
 !
 ip route 172.16.7.0 255.255.255.0 Serial0/0/1 
 ipv6 route 2001:db8:7::/64 Serial0/0/1
+ip route 172.16.6.0 255.255.255.0 Serial0/0/1
 !
 end
