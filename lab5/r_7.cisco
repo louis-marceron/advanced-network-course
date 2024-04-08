@@ -21,8 +21,8 @@ line vty 0 4
 !
 ! ==== INTERFACES ====
 !
-! == Loopbacks are configured to check if the default gateway is working
-!
+! Loopbacks are used as alternative IPs to connect to the router, to practice
+! with summary routes and default gateways
 interface Loopback1
  ip address 192.168.71.70 255.255.255.0
  ipv6 address 2001:db8:0:71::70/64
@@ -61,9 +61,11 @@ interface Serial0/1/0
 ip route 0.0.0.0 0.0.0.0 10.7.8.2
 ipv6 route ::/0 FC00:7:8::2
 !
-! == Summary route to R_8's loopbacks (It's useless since we're using the gateway?)==
-! ip route 192.168.80.0 255.255.255.0 10.7.8.2
-! ipv6 route 2001:db8:0:80::/62 FC00:7:8::2
+! == Summary route to R_8's loopbacks
+! It is useless since we have a default gateway, but it is here for the sake of 
+! the exercise
+ip route 192.168.80.0 255.255.255.0 10.7.8.2
+ipv6 route 2001:db8:0:80::/62 FC00:7:8::2
 !
 ! == LAN_1 via R_6 (using exit interface) ==
 ip route 172.16.1.0 255.255.255.0 Serial0/1/0 
