@@ -1,0 +1,56 @@
+hostname R_7
+!
+enable password class
+!
+no ip domain-lookup
+!
+debug ip routing
+!
+banner motd ^C The supervised. Access only to authorized users  ^C
+!
+line con 0
+ exec-timeout 0 0
+ password cisco
+ logging synchronous
+!
+line vty 0 4
+ exec-timeout 0 0
+ password cisco
+ logging synchronous
+ login
+!
+! ==== INTERFACES ====
+!
+interface FastEthernet 0/0
+ no ip address
+ no shutdown
+!
+interface FastEthernet 0/1
+ no ip address
+ no shutdown
+!
+interface FastEthernet 0/0.10
+ encapsulation dot1q 10 
+ ip address 172.16.10.70 255.255.255.0
+ description Connection to VLAN 10
+ no shutdown
+!
+interface FastEthernet 0/0.20
+ encapsulation dot1q 20
+ ip address 172.16.20.70 255.255.255.0
+ description Connection to VLAN 20
+ no shutdown
+!
+interface FastEthernet 0/0.99
+ encapsulation dot1q 99 native
+ ip address 172.16.99.70 255.255.255.0
+ description Connection to VLAN 99 
+ no shutdown
+!
+interface Serial0/1/0
+ description Connection to R_6
+ ip address 10.6.7.2 255.255.255.0
+ no shutdown
+!
+end
+!
