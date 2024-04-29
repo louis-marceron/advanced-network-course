@@ -19,6 +19,11 @@ password cisco
 !
 ! ==== INTERFACES ====
 !
+router ospf 1
+ passive-interface FastEthernet0/0
+ network 10.1.6.1 0.0.0.3 area 0
+ network 172.16.1.0 0.0.0.255 area 0
+!
 interface FastEthernet0/0
  description Connection to LAN_1
  ip address 172.16.1.10 255.255.255.0

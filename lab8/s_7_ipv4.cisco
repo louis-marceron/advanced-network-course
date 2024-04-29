@@ -19,6 +19,8 @@ line vty 0 15
 !
 ! ==== INTERFACES ====
 !
+ip default-gateway 172.16.7.70
+!
 interface FastEthernet0/1
  description Connection to PC1
  no shutdown
