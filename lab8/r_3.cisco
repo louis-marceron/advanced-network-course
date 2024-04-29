@@ -1,0 +1,115 @@
+!
+hostname R_3
+banner motd  #  The supervised. Access only to authorized users   #
+!
+no ip domain-lookup
+ipv6 unicast-routing
+!
+enable password class
+!
+line console 0
+password cisco
+logging synchronous
+exec-timeout 0 0
+login
+!
+line vty 0 4
+password cisco
+logging synchronous
+exec-timeout 0 0
+login
+!
+! ==== Interfaces ====
+!
+interface FastEthernet 0/0
+description Connection to LAN_3
+ip address 172.16.3.30 255.255.255.0
+no shutdown
+!
+interface Serial 0/0/0
+description Connection to R_4
+ip address 10.3.4.1 255.255.255.0
+clock rate 64000
+no shutdown
+!
+interface Serial 0/0/1
+description Connection to R_2
+ip address 10.2.3.2 255.255.255.0
+no shutdown
+!
+end
+
+
+! 2.10
+router ospf 3
+passive-interface FastEthernet 0/0
+network 10.2.3.2 0.0.0.3 area 0
+network 10.3.4.1 0.0.0.3 area 0
+network 172.16.3.0 0.0.0.255 area 0
+end
+
+! 2.18
+interface Loopback 0
+ip address 192.168.30.30 255.255.255.255
+end
+
+! 2.21
+router ospf 3
+router-id 3.3.3.3
+end
+
+! 2.22
+no interface Loopback 0
+end
+
+! 2.23
+router ospf 3
+passive-interface FastEthernet 0/0
+end
+
+! 2.25
+router ospf 3
+passive-interface default
+end
+
+! 2.26
+router ospf 3
+no passive-interface default
+end
+
+! 2.27
+interface Loopback 1
+ip address 192.168.3.1 255.255.255.192
+interface Loopback 3
+ip address 192.168.3.129 255.255.255.192
+end
+
+! 2.28
+ip route 0.0.0.0 0.0.0.0 Loopback 1
+!
+ip route 10.108.128.0 255.255.252.0 172.16.3.31
+ip route 10.108.128.0 255.255.252.0 172.16.3.32
+!
+ip route 192.168.3.64 255.255.255.192 Loopback 1
+ip route 192.168.3.192 255.255.255.192 192.168.3.130
+!
+end
+
+! 2.29
+router ospf 3
+!
+network 0.0.0.0 255.255.255.255 area 0
+!
+network 192.168.3.0 0.0.0.63 area 0
+network 192.168.3.129 0.0.0.63 area 0
+!
+network 192.168.3.64 0.0.0.63 area 0
+network 192.168.3.192 0.0.0.63 area 0
+!
+! or
+! 
+network 192.168.3.0 0.0.0.255 area 0
+
+! 2.30
+router ospf 3
+redistribute static

@@ -1,0 +1,42 @@
+!
+hostname R_4
+banner motd  #  The supervised. Access only to authorized users   #
+!
+no ip domain-lookup
+ipv6 unicast-routing
+!
+enable password class
+!
+line console 0
+password cisco
+logging synchronous
+exec-timeout 0 0
+login
+!
+line vty 0 15
+password cisco
+logging synchronous
+exec-timeout 0 0
+login
+!
+! ==== Interfaces ====
+!
+interface FastEthernet 0/0
+description Connection to LAN_4
+ip address 172.16.4.40 255.255.255.0
+no shutdown
+!
+interface Serial 0/0/1
+description Connection to R_3
+ip address 10.3.4.2 255.255.255.0
+no shutdown
+!
+end
+!
+
+
+router ospf 4
+passive-interface FastEthernet 0/0
+network 10.3.4.2 0.0.0.3 area 0
+network 172.16.4.0 0.0.0.255 area 0
+exit

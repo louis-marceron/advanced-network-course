@@ -1,0 +1,57 @@
+!
+! Lab6 - S3
+!
+hostname S_3
+banner motd  #  The supervised. Access only to authorized users   #
+!
+enable password class
+!
+line con 0
+ password cisco
+ logging synchronous
+ login
+ exec-timeout 0 0
+!
+line vty 0 15
+ exec-timeout 0 0
+ password cisco
+ logging synchronous
+ login
+!
+!
+no ip domain-lookup
+!
+spanning-tree mode pvst
+spanning-tree extend system-id
+!
+interface range FastEthernet 0/1-10
+ switchport mode access
+ switchport access vlan 10
+!
+interface range FastEthernet 0/11-20
+ switchport mode access
+ switchport access vlan 20
+!
+interface range FastEthernet 0/21-24
+ switchport mode access
+ switchport access vlan 99
+!
+interface range GigabitEthernet 0/1-2
+ switchport mode access
+ switchport access vlan 99
+!
+interface Vlan99
+ description VLAN Manager
+ ip address 172.16.99.39 255.255.255.0
+!
+ip default-gateway 172.16.99.30
+!
+interface range FastEthernet 0/1-24, GigabitEthernet 0/1-2
+ no shutdown
+!
+end
+
+! > Trunk
+interface range FastEthernet 0/19-24, Gi 0/1-2
+ switchport mode trunk
+ switchport trunk native VLAN 99
