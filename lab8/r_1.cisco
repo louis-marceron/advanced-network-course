@@ -1,0 +1,39 @@
+hostname R_1
+!
+enable password class
+!
+no ip domain-lookup
+!
+banner motd ^C The supervised. Access only to authorized users  ^C
+!
+line con 0
+ exec-timeout 0 0
+ password cisco
+logging synchronous
+!
+line vty 0 4
+exec-timeout 0 0
+password cisco
+ logging synchronous
+ login
+!
+! ==== INTERFACES ====
+!
+router ospf 1
+ passive-interface FastEthernet0/0
+ network 10.1.6.1 0.0.0.3 area 0
+ network 172.16.1.0 0.0.0.255 area 0
+!
+interface FastEthernet0/0
+ description Connection to LAN_1
+ ip address 172.16.1.10 255.255.255.0
+ no shutdown
+!
+interface Serial0/3/0
+ description Connection to R_6
+ ip address 10.1.6.1 255.255.255.252
+ clock rate 64000
+ no shutdown
+!
+end
+!
