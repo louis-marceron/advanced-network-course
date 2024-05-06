@@ -20,19 +20,34 @@ password cisco
 ! ==== INTERFACES ====
 !
 interface FastEthernet0/0
- description Connection to LAN_6
- ip address 172.16.6.60 255.255.255.0
+ description Connection to S_6
+ ip address 172.16.0.60 255.255.255.0
+ ipv6 address FC00::60/64
+ ipv6 address fe80::60 link-local
  no shutdown
 !
 interface Serial0/0/0
  description Connection to R_7
  ip address 10.6.7.1 255.255.255.252
+ ipv6 address FC00:6:7::1/64
+ ipv6 address fe80::1 link-local
  clock rate 64000
  no shutdown
 !
 interface Serial0/3/1
  description Connection to R_1
  ip address 10.1.6.2 255.255.255.252
+ ipv6 address FC00:1:6::2/64
+ ipv6 address fe80::2 link-local
  no shutdown
+!
+! ==== OSPF ====
+router ospf 6
+ router-id 6.6.6.6
+ network 172.16.0.0 0.0.0.255 area 0
+ network 10.6.7.1 0.0.0.3 area 0
+ network 10.1.6.2 0.0.0.3 area 0
+ network 192.168.6.6 0.0.0.0 area 0
+!
 end
 !

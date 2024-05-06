@@ -1,4 +1,4 @@
-hostname S_7
+hostname S_6
 !
 enable password class
 !
@@ -21,24 +21,24 @@ line vty 0 15
 !
 ! ==== INTERFACES ====
 !
-ip default-gateway 172.16.7.70
+ip default-gateway 172.16.0.60
 !
 interface FastEthernet0/1
- description Connection to PC1
+ description Connection to PC_61
  no shutdown
 !
 interface FastEthernet0/11
- description Connection to PC2
+ description Connection to PC_62
  no shutdown
 !
 interface FastEthernet0/23
- description Connection to R_7
+ description Connection to R_6
  no shutdown
 !
 interface vlan 1
- ip address 172.16.7.79 255.255.255.0
- ipv6 address 2001:db8:7::79/64
- ipv6 address fe80::79 link-local
+ ip address 172.16.0.69 255.255.255.0
+ ipv6 address FC00::69/64
+ ipv6 address fe80::69 link-local
  no shutdown
 !
 end

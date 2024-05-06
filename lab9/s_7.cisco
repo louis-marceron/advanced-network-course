@@ -1,8 +1,10 @@
-hostname S_1
+hostname S_7
 !
 enable password class
 !
 no ip domain-lookup
+!
+sdm prefer dual-ipv4-and-ipv6 default
 !
 banner motd ^C The supervised. Access only to authorized users  ^C
 !
@@ -19,20 +21,24 @@ line vty 0 15
 !
 ! ==== INTERFACES ====
 !
+ip default-gateway 172.16.0.70
+!
 interface FastEthernet0/1
- description Connection to PC1
+ description Connection to PC_71
  no shutdown
 !
 interface FastEthernet0/11
- description Connection to PC2
+ description Connection to PC_72
  no shutdown
 !
 interface FastEthernet0/23
- description Connection to R_1
+ description Connection to R_7
  no shutdown
 !
 interface vlan 1
- ip address 172.16.1.19 255.255.255.0
+ ip address 172.16.0.79 255.255.255.0
+ ipv6 address FC00::79/64
+ ipv6 address fe80::79 link-local
  no shutdown
 !
 end

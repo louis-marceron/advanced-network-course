@@ -1,0 +1,61 @@
+hostname R_7
+!
+enable password class
+!
+no ip domain-lookup
+!
+ipv6 unicast-routing
+!
+banner motd ^C The supervised. Access only to authorized users  ^C
+!
+line con 0
+ exec-timeout 0 0
+ password cisco
+ logging synchronous
+!
+line vty 0 4
+ exec-timeout 0 0
+ password cisco
+ logging synchronous
+ login
+!
+! ==== INTERFACES ====
+!
+interface FastEthernet0/0
+ description Connection to S_7
+ ip address 172.16.0.70 255.255.255.0
+ ipv6 address FC00::70/64
+ ipv6 address fe80::70 link-local
+ bandwidth 10000
+ ip ospf cost 1001
+ no shutdown
+!
+interface Serial0/1/0
+ description Connection to R_6
+ ip address 10.6.7.2 255.255.255.252
+ ipv6 address FC00:6:7::2/64
+ ipv6 address fe80::2 link-local
+ bandwidth 100000
+ ip ospf cost 101
+ no shutdown
+!
+interface Loopback0
+ ip address 192.168.7.7 255.255.255.255
+!
+! ==== STATIC ROUTES ====
+!
+ip route 172.16.0.72 255.255.255.255 FastEthernet0/0
+ip route 0.0.0.0 0.0.0.0 Loopback0
+!
+! ==== OSPF ====
+!
+router ospf 7
+ router-id 7.7.7.7
+ no passive-interface FastEthernet0/0
+ network 172.16.0.0 0.0.0.255 area 0
+ network 10.6.7.2 0.0.0.3 area 0
+ network 192.168.7.7 0.0.0.0 area 0
+ auto-cost reference-bandwidth 10000
+!
+end
+!
