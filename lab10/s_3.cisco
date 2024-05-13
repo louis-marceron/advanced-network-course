@@ -1,0 +1,39 @@
+!
+hostname S_3
+banner motd # GROUP 3 SWITCH #
+!
+no ip domain-lookup
+sdm prefer dual-ipv4-and-ipv6 default
+!
+enable password class
+!
+line console 0
+password cisco
+login
+logging synchronous
+!
+line vty 0 15
+password cisco
+login
+logging synchronous
+!
+interface VLAN 1
+description VLAN Manager
+ip address 192.168.3.39 255.255.255.0
+ipv6 address fe80::39 link-local
+ipv6 address fc00:3::39/64
+no shutdown
+!
+interface FastEthernet 0/1
+description Connection to PC1
+!
+interface FastEthernet 0/11
+description Connection to PC2
+!
+interface FastEthernet 0/23
+description Connection to R_3
+!
+ip default-gateway 192.168.3.30
+ipv6 default-gateway fc00:3::30
+!
+end

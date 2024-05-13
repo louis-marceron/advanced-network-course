@@ -1,0 +1,99 @@
+!
+hostname R_3
+banner motd  #  GROUP 3 ROUTER  #
+!
+no ip domain-lookup
+ipv6 unicast-routing
+!
+enable password class
+!
+line console 0
+password cisco
+logging synchronous
+exec-timeout 0 0
+login
+!
+line vty 0 4
+password cisco
+logging synchronous
+exec-timeout 0 0
+login
+!
+! ==== Interfaces ====
+!
+interface FastEthernet 0/0
+description Connection to LAN_3
+ip address 192.168.3.30 255.255.255.0
+ipv6 address fe80::30 link-local
+ipv6 address fc00:3::30/64
+no shutdown
+!
+interface Serial 0/0/0
+description Connection to R_4
+ip address 10.3.4.1 255.255.255.0
+ipv6 address fe80::1 link-local
+ipv6 address fc00:3:4::1/64
+clock rate 64000
+no shutdown
+!
+interface Serial 0/0/1
+description Connection to R_2
+ip address 10.2.3.2 255.255.255.0
+ipv6 address fe80::1 link-local
+ipv6 address fc00:2:3::2/64
+no shutdown
+!
+end
+
+!
+! ==== RIP ====
+!
+router rip
+passive-interface FastEthernet 0/0
+network 10.0.0.0
+network 192.168.3.0
+
+! Q. 1.22
+ip route 0.0.0.0 0.0.0.0 10.3.4.2
+router rip
+redistribute static
+! network 0.0.0.0
+
+!
+! ==== DEBUGING ====
+!
+! show ip protocols
+! debug ip rip
+! show ip rip database
+
+!
+! ==== RIPv2 ====
+!
+router rip
+version 2
+!
+interface Loopback 1
+ip address 172.16.31.30 255.255.255.255
+!
+interface Loopback 2
+ip address 172.16.32.30 255.255.255.255
+!
+router rip
+network 10.0.0.0
+network 192.168.3.0
+network 172.16.0.0
+! no auto-summary 
+
+!
+! ==== RIPng ====
+!
+ipv6 router rip Lab3
+!
+interafce Serial 0/0/0
+ipv6 rip Lab3 enable
+!
+interafce Serial 0/0/1
+ipv6 rip Lab3 enable
+!
+interafce FastEthernet 0/0
+ipv6 rip Lab3 enable
