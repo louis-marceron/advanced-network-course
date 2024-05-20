@@ -26,6 +26,8 @@ interface FastEthernet0/0
  ip address 172.16.7.70 255.255.255.0
  ipv6 address 2001:db8:7::70/64
  ipv6 address fe80::70 link-local
+ ipv6 rip RIPng7 enable
+ ipv6 rip RIPng7 default-information originate
  no shutdown
 !
 interface Serial0/1/0
@@ -33,7 +35,69 @@ interface Serial0/1/0
  ip address 10.6.7.2 255.255.255.252
  ipv6 address 2001:db8:6:7::2/64
  ipv6 address fe80::2 link-local
+ ipv6 ospf 7 area 0
  no shutdown
+!
+interface Loopback 0
+ ipv6 address 2001:db8:7:7::7/64
+ no shutdown
+!
+interface Loopback 1
+ ip address 192.168.7.1 255.255.255.192
+ ipv6 address 2001:db8:7:71::7/64
+ ipv6 ospf 7 area 7
+ no shutdown
+!
+interface Loopback 3
+ ip address 192.168.7.129 255.255.255.192
+ ipv6 address 2001:db8:7:73::7/64
+ ipv6 ospf 7 area 7
+ no shutdown
+!
+! ==== ROUTES ====
+!
+ip route 192.168.7.64 255.255.255.0 Loopback 1
+ip route 192.168.7.192 255.255.255.0 Loopback 3
+ip route 0.0.0.0 0.0.0.0 Loopback 1
+ipv6 route ::/0 Loopback 0
+ipv6 route 2001:db8:7:72::/64 Loopback 1
+ipv6 route 2001:db8:7:74::/64 2001:db8:7:73::8
+!
+! ==== OSPF ====
+!
+router ospf 7
+ router-id 7.7.7.7
+ network 10.6.7.2 0.0.0.3 area 0
+ network 192.168.7.1 0.0.0.0 area 7
+ network 192.168.7.129 0.0.0.0 area 7
+ redistribute rip metric 100 subnets
+ redistribute static metric 10 subnets
+ redistribute connected subnets
+ default-information originate
+!
+! ==== RIP ====
+!
+router rip
+ no auto-summary
+ network 172.16.0.0
+ redistribute ospf 7 metric 5
+ redistribute static
+ redistribute connected
+ default-information originate
+!
+! ==== OSPF IPv6 ====
+ipv6 router ospf 7
+ router-id 7.7.7.7
+ redistribute rip RIPng7 metric 100
+ redistribute static metric 10
+ redistribute connected
+ default-information originate
+!
+! ==== RIPng ====
+ipv6 router rip RIPng7
+ redistribute ospf 7 metric 5
+ redistribute static
+ redistribute connected
 !
 end
 !
