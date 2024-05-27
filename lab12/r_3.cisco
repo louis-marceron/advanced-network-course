@@ -1,0 +1,88 @@
+!
+hostname R_3
+banner motd  #  GROUP 3 ROUTER  #
+!
+no ip domain-lookup
+ipv6 unicast-routing
+!
+enable password class
+!
+line console 0
+password cisco
+logging synchronous
+exec-timeout 0 0
+login
+!
+line vty 0 4
+password cisco
+logging synchronous
+exec-timeout 0 0
+login
+!
+! ==== Interfaces ====
+!
+interface Loopback 3
+ip address 172.16.33.30 255.255.255.0
+no shutdown
+!
+interface FastEthernet 0/0
+ip address 172.16.31.30 255.255.255.0
+no shutdown
+!
+interface FastEthernet 0/1
+ip address 172.16.32.30 255.255.255.0
+no shutdown
+!
+interface Serial 0/0/0
+description Connection to R_4
+ip address 10.3.4.1 255.255.255.0
+clock rate 128000
+no shutdown
+!
+interface Serial 0/0/1
+description Connection to R_2
+ip address 10.2.3.2 255.255.255.0
+no shutdown
+!
+!
+! ==== RIP ====
+!
+router rip
+version 2
+no auto-summary
+network 10.0.0.0
+network 172.16.0.0
+!
+ip route 0.0.0.0 0.0.0.0 Serial 0/0
+!
+end
+
+!
+! ==== ACL ====
+!
+! > 1,2
+! > On R_4 (from PC_2)
+!
+access-list 3 remark denied access to the network LAN_41 from LAN_31
+access-list 3 deny 172.16.31.0 0.0.0.255 log
+access-list 3 permit any
+!
+interface FastEthernet 0/0
+ip access-group 3 out
+!
+end
+!
+! > 3,4
+! > On R_4
+!
+ip access-list standard LSTD_3
+deny 172.16.32.0 0.0.0.255 log
+deny 172.16.33.0 0.0.0.255 log
+permit any
+!
+interface Loopback 3
+ip access-group LSTD_3 out 
+!
+end
+!
+end

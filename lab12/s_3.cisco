@@ -1,0 +1,27 @@
+!
+hostname S_3
+banner motd # GROUP 3 SWITCH #
+!
+no ip domain-lookup
+sdm prefer dual-ipv4-and-ipv6 default
+!
+enable password class
+!
+line console 0
+password cisco
+login
+logging synchronous
+!
+line vty 0 15
+password cisco
+login
+logging synchronous
+!
+interface VLAN 1
+description VLAN Manager
+ip address 172.16.31.39 255.255.255.0
+no shutdown
+!
+ip default-gateway 172.16.31.30
+!
+end
